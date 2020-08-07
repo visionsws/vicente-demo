@@ -1,0 +1,54 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: vicente-demo
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
+  #数据库配置
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: 'shiws1203'
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 5
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: "SELECT 'x'"
+    testWhileIdle: false
+    testOnBorrow: false
+    testOnReturn: false
+    maxOpenPreparedStatements: 10
+    removeAbandoned: true
+    removeAbandonedTimeout: 1800
+    logAbandoned: true
+    poolPreparedStatements: true
+    keepAlive: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  messages:
+    encoding: UTF-8
+    basename: message/messages_zh
+# Logger Config
+logging:
+  level:
+    com.vicente.vicentedemo: debug
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  # 扫描 mapper.xml
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  configuration:
+    jdbc-type-for-null: 'null'
+
