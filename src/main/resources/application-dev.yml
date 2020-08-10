@@ -38,6 +38,13 @@ spring:
   messages:
     encoding: UTF-8
     basename: message/messages_zh
+  # 定位模板的目录,给返回的页面添加后缀名
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    servlet:
+      content-type: text/html
+    mode: HTML5
 # Logger Config
 logging:
   level:
@@ -51,4 +58,3 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   configuration:
     jdbc-type-for-null: 'null'
-

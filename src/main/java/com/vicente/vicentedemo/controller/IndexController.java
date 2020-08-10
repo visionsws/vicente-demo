@@ -1,6 +1,8 @@
 package com.vicente.vicentedemo.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +29,12 @@ public class IndexController {
     @RequestMapping("/index")
     @ResponseBody
     public String index() {
-        return "index";
+        return "index，首页";
+    }
+
+    @RequestMapping("/loginPage")
+    public String login() {
+        return "login_page";
     }
 
     @RequestMapping("/form")
@@ -43,6 +50,13 @@ public class IndexController {
     @RequestMapping("/loginError")
     @ResponseBody
     public String loginError() {
-        return "loginError";
+        return "loginError,失败页面";
+    }
+
+    @RequestMapping("/whoim")
+    @ResponseBody
+    public Object whoIm()
+    {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
