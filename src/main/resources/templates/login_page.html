@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html id="ng-app" ng-app="app"  xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>home</title>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="/css/login.css" type="text/css">
 </head>
 <body>
-<form  class="form-signin" action="/form" method="post">
-    <h2 class="form-signin-heading">用户登录</h2>
-    <table>
-        <tr>
-            <td>用户名:</td>
-            <td><input type="text" name="username"  class="form-control"  placeholder="请输入用户名"/></td>
-        </tr>
-        <tr>
-            <td>密码:</td>
-            <td><input type="password" name="password"  class="form-control" placeholder="请输入密码" /></td>
-        </tr>
-        <tr>
-
-            <td colspan="2">
-                <button type="submit"  class="btn btn-lg btn-primary btn-block" >登录</button>
-            </td>
-        </tr>
-    </table>
+<form class="login-page" action="/form" method="post">
+    <div class="form">
+        <h3>账户登录</h3>
+        <input type="text" placeholder="用户名" name="username" required="required"/>
+        <input type="password" placeholder="密码" name="password" required="required"/>
+        <span style="display: inline">
+            <input type="text" name="imageCode" placeholder="验证码" style="width: 50%;"/>
+            <img id="captchaImg" src="/code/image" onclick="changeCode()"/>
+        </span>
+        <input type="checkbox" name="remember-me"/> 记住我
+        <button type="submit">登录</button>
+    </div>
 </form>
 </body>
+<script>
+    function changeCode() {
+        var img = document.getElementById("captchaImg");
+        img.src = "/code/image?time=" + new Date().getTime();
+    }
+</script>
 </html>

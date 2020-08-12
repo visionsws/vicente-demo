@@ -13,6 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationFailureHandler myAuthenticationFailureHandler;
+
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private UserDetailsService myUserDetailsService;
 
 
     @Override
@@ -52,12 +66,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and();
         http
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 //无需权限访问
-                .antMatchers("/webjars/**", "/getVerifyCodeImage","/error/*").permitAll()
+                .antMatchers("/css/**", "/code/*","/error/*").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 //其他接口需要登录后才能访问
                 .anyRequest().authenticated()
+                .and();
+        http
+                .sessionManagement() // 添加 Session管理器
+                .invalidSessionUrl("/session/invalid") // Session失效后跳转到这个链接
+                .maximumSessions(1)
+                //.expiredSessionStrategy(sessionExpiredStrategy)
+                .and();
+        http
+                //开启记住我
+                .rememberMe()
+                .tokenValiditySeconds(7200) // remember 过期时间，单为秒
+                .tokenRepository(persistentTokenRepository())
+                .userDetailsService(myUserDetailsService)
                 .and();
     }
 
@@ -65,6 +93,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        jdbcTokenRepository.setCreateTableOnStartup(false);
+        return jdbcTokenRepository;
     }
 
 }

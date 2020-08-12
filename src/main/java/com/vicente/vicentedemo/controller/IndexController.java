@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -38,7 +39,7 @@ public class IndexController {
     }
 
     @RequestMapping("/form")
-    public void form(HttpServletResponse response) {
+    public void form(HttpServletRequest request,HttpServletResponse response) {
         //内部重定向
         try {
             response.sendRedirect("/index");

@@ -42,8 +42,6 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
-    servlet:
-      content-type: text/html
     mode: HTML5
 # Logger Config
 logging:
