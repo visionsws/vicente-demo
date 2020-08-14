@@ -2,10 +2,13 @@ package com.vicente.vicentedemo.controller;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
+import cn.hutool.captcha.ShearCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -31,7 +34,7 @@ public class ValidateController {
         response.setContentType("image/jpeg");
 
         //定义图形验证码的长、宽、验证码字符数、干扰元素个数
-        CircleCaptcha captcha = CaptchaUtil.createCircleCaptcha(100, 38, 4, 20);
+        ShearCaptcha captcha = CaptchaUtil.createShearCaptcha(100, 38, 4, 1);
         System.out.println(captcha.getCode());
         //将验证码放到HttpSession里面
         request.getSession().setAttribute(SESSION_KEY_IMAGE_CODE, captcha.getCode());
@@ -44,5 +47,11 @@ public class ValidateController {
         out.flush();
         out.close();
 
+    }
+
+    @GetMapping("/session/invalid")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String sessionInvalid(){
+        return "session已失效，请重新认证";
     }
 }

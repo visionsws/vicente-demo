@@ -1,10 +1,10 @@
 package com.vicente.vicentedemo.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -22,5 +22,14 @@ public class SysUserController {
     public String index() {
         return "list";
     }
+
+
+
+    @RequestMapping("/whoim")
+    public Object whoIm()
+    {
+        return SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
 
 }
