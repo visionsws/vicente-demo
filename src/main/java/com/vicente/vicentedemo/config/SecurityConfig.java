@@ -91,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 //无需权限访问
-                .antMatchers("/css/**","/session/invalid", "/code/*","/error/*").permitAll()
+                .antMatchers("/css/**","/download/**","/session/invalid", "/code/*","/error/*","/reportSale/*").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 //其他接口需要登录后才能访问
                 .anyRequest().authenticated()

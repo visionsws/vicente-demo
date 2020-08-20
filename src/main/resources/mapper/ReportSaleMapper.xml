@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vicente.vicentedemo.mapper.ReportSaleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.vicente.vicentedemo.entity.ReportSale">
+        <id column="id" property="id" />
+        <result column="area_name" property="areaName" />
+        <result column="sale_name" property="saleName" />
+        <result column="product_type" property="productType" />
+        <result column="product_name" property="productName" />
+        <result column="sale_num" property="saleNum" />
+        <result column="english_name" property="englishName" />
+    </resultMap>
+
+    <select id="getSaleData" resultMap="BaseResultMap" parameterType="Map">
+        select * from report_sale
+        <where>
+            <if test="areaName!=null and areaName !=''">
+                and area_name = #{areaName}
+            </if>
+            <if test="saleName!=null and saleName !=''">
+                and sale_name = #{saleName}
+            </if>
+            <if test="productType!=null and productType !=''">
+                and product_type = #{productType}
+            </if>
+            <if test="productName!=null and productName !=''">
+                and product_name = #{productName}
+            </if>
+            <if test="saleNum!=null and saleNum !=''">
+                and sale_num &gt;= #{saleNum}
+            </if>
+        </where>
+        limit #{offset},#{pageSize}
+    </select>
+
+</mapper>
