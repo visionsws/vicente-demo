@@ -3,6 +3,7 @@ package com.vicente.vicentedemo.controller;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.vicente.vicentedemo.common.ResultBean;
 import com.vicente.vicentedemo.entity.ReportSale;
 import com.vicente.vicentedemo.service.ReportSaleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,10 @@ public class ReportSaleController {
     private ReportSaleService saleService;
 
     @RequestMapping("/getData")
-    public String getData(@RequestBody String param){
+    public ResultBean getData(@RequestBody String param){
         JSONObject jsonObj = JSONUtil.parseObj(param);
         List<ReportSale> list = saleService.getSaleData(jsonObj);
-        return JSONUtil.toJsonStr(list);
+        return new ResultBean(list);
     }
 
 }
